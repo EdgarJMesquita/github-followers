@@ -9,13 +9,16 @@ import Foundation
 import UIKit
 
 class FollowerCell: UICollectionViewCell {
+    
     static let identifier = "FollowerCell"
+    
     
     lazy var avatarImageView: GFAvatarImageView = {
         let imageVIew = GFAvatarImageView(frame: .zero)
         imageVIew.translatesAutoresizingMaskIntoConstraints = false
         return imageVIew
     }()
+    
     
     lazy var usernameTitle: GFTitleLabel = {
         let label = GFTitleLabel(textAlignment: .center, fontSize: 16)
@@ -29,6 +32,7 @@ class FollowerCell: UICollectionViewCell {
         setupUI()
     }
     
+    
     func set(follower: Follower){
         usernameTitle.text = follower.login
         avatarImageView.downloadImage(from: follower.avatarUrl)
@@ -39,15 +43,18 @@ class FollowerCell: UICollectionViewCell {
         avatarImageView.resetImage()
     }
     
+    
     private func setupUI(){
         setupHierarchy()
         setupConstraints()
     }
     
+    
     private func setupHierarchy(){
         contentView.addSubview(avatarImageView)
         contentView.addSubview(usernameTitle)
     }
+    
     
     private func setupConstraints(){
         let padding: CGFloat = 8
@@ -65,7 +72,9 @@ class FollowerCell: UICollectionViewCell {
         ])
     }
     
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
 }

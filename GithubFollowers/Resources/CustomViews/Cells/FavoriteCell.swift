@@ -9,27 +9,39 @@ import Foundation
 import UIKit
 
 class FavoriteCell: UITableViewCell {
+    
     static let identifier = "FavoriteCell"
+    
     
     private lazy var avatarImageView: GFAvatarImageView = {
         let imageView = GFAvatarImageView(frame: .zero)
         return imageView
     }()
     
+    
     private lazy var usernameLabel: GFTitleLabel = {
         let label = GFTitleLabel(textAlignment: .left, fontSize: 26)
         return label
     }()
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
     }
     
+    
     func configure(with favorite: Follower){
-        avatarImageView.downloadImage(from: favorite.avatarUrl)
         usernameLabel.text = favorite.login
+        avatarImageView.downloadImage(from: favorite.avatarUrl)
     }
+    
+    
+    override func prepareForReuse() {
+        avatarImageView.resetImage()
+        usernameLabel.text = ""
+    }
+    
     
     private func setupUI(){
         setupHierarchy()
@@ -38,10 +50,12 @@ class FavoriteCell: UITableViewCell {
         accessoryType = .disclosureIndicator
     }
     
+    
     private func setupHierarchy(){
         contentView.addSubview(avatarImageView)
         contentView.addSubview(usernameLabel)
     }
+    
     
     private func setupConstraints(){
         let padding: CGFloat = 12
@@ -59,7 +73,9 @@ class FavoriteCell: UITableViewCell {
         ])
     }
     
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
 }

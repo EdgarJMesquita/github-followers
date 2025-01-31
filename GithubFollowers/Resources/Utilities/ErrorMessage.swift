@@ -9,6 +9,7 @@ import Foundation
 
 
 enum GFError: String, Error {
+    
     case invalidUserName = "Este nome de usuário criou uma requisição inválida. Por favor tente novamente."
     case unableToComplete = "Não foi possível completar a requisição.Por favor tente novamente."
     case invalidResponse = "Resposta inválida do servidor. Por favor tente novamente."
@@ -16,4 +17,19 @@ enum GFError: String, Error {
     case unableToFavorite = "Não foi possível favoritar este usuário."
     case unableToGetFavorites = "Não foi possível listar os favoritos."
     case alreadyInFavorites = "Você já favoritou esse usuário."
+    case exceedRateLimit = "Você usou demais a API do GitHub. Tente novamente mais tarde."
+    
+}
+
+
+enum GFError2: Error {
+    
+    case invalidUserName
+    case unableToCompletee
+    case invalidResponse
+    case invalidData
+    case unableToFavorite
+    case unableToGetFavorites
+    case alreadyInFavorites
+    
 }

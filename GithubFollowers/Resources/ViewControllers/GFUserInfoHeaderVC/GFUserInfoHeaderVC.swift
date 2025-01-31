@@ -8,33 +8,39 @@
 import UIKit
 
 class GFUserInfoHeaderVC: UIViewController {
+    
     private lazy var avatarImageView: GFAvatarImageView = {
         let imageView = GFAvatarImageView(frame: .zero)
         return imageView
     }()
+    
     
     private lazy var usernameLabel: GFTitleLabel = {
         let label = GFTitleLabel(textAlignment: .left, fontSize: 34)
         return label
     }()
     
+    
     private lazy var nameLabel: GFSecondaryTitleLabel = {
         let label = GFSecondaryTitleLabel(fontSize: 18)
         return label
     }()
     
+    
     private lazy var locationImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "mappin.and.ellipse")
+        imageView.image = SFSymbols.location
         imageView.tintColor = .secondaryLabel
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
+    
     private lazy var locationLabel: GFSecondaryTitleLabel = {
         let label = GFSecondaryTitleLabel(fontSize: 18)
         return label
     }()
+    
     
     private lazy var bioLabel: GFBodyLabel = {
         let label = GFBodyLabel(textAlignment: .left)
@@ -42,16 +48,20 @@ class GFUserInfoHeaderVC: UIViewController {
         return label
     }()
     
+    
     var user: User
+    
     
     init(user: User) {
         self.user = user
         super.init(nibName: nil, bundle: nil)
     }
     
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,30 +69,37 @@ class GFUserInfoHeaderVC: UIViewController {
         configureData()
     }
     
+    
     private func configureData(){
-        avatarImageView.downloadImage(from: user.avatarUrl)
         usernameLabel.text = user.login
         nameLabel.text = user.name ?? ""
         locationLabel.text = user.location ?? "Sem localização"
         bioLabel.text = user.bio ?? ""
+        
+        avatarImageView.downloadImage(from: user.avatarUrl)
     }
+    
     
     private func setup(){
         setupHierarchy()
         setupConstraints()
     }
     
+    
     private func setupHierarchy(){
-        view.addSubview(avatarImageView)
-        view.addSubview(usernameLabel)
-        view.addSubview(nameLabel)
-        view.addSubview(locationImageView)
-        view.addSubview(locationLabel)
-        view.addSubview(bioLabel)
+        view.addSubviews(
+            avatarImageView,
+            usernameLabel,
+            nameLabel,
+            locationImageView,
+            locationLabel,
+            bioLabel
+        )
     }
     
+    
     private func setupConstraints(){
-        let padding: CGFloat = 20
+        let padding: CGFloat = 10
         let textImagePadding: CGFloat = 12
         
         NSLayoutConstraint.activate([
@@ -114,7 +131,7 @@ class GFUserInfoHeaderVC: UIViewController {
             bioLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: textImagePadding),
             bioLabel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
             bioLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-            bioLabel.heightAnchor.constraint(equalToConstant: 60),
+            bioLabel.heightAnchor.constraint(equalToConstant: 90),
         ])
     }
     

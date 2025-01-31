@@ -8,6 +8,7 @@
 import UIKit
 
 class GFItemInfoVC: UIViewController {
+    
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
@@ -16,17 +17,20 @@ class GFItemInfoVC: UIViewController {
         return stackView
     }()
     
+    
     lazy var itemInfoViewOne: GFItemInfoView = {
         let view = GFItemInfoView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
+    
     lazy var itemInfoViewTwo: GFItemInfoView = {
         let view = GFItemInfoView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
     
     lazy var actionButton: GFButton = {
         let button = GFButton()
@@ -36,17 +40,18 @@ class GFItemInfoVC: UIViewController {
 
     
     let user: User
-    weak var delegate: UserInfoVCDelegate?
     
-    init(user: User, delegate: UserInfoVCDelegate) {
+    
+    init(user: User) {
         self.user = user
-        self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
     }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,14 +59,17 @@ class GFItemInfoVC: UIViewController {
         configureActionButton()
     }
     
+    
     private func configureActionButton(){
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
     }
+    
     
     @objc
     func actionButtonTapped(){
         
     }
+    
     
     private func setupUI(){
         view.layer.cornerRadius = 18
@@ -71,12 +79,13 @@ class GFItemInfoVC: UIViewController {
         setupConstraints()
     }
     
+    
     private func setupHierarchy(){
         stackView.addArrangedSubview(itemInfoViewOne)
         stackView.addArrangedSubview(itemInfoViewTwo)
-        view.addSubview(stackView)
-        view.addSubview(actionButton)
+        view.addSubviews(stackView, actionButton)
     }
+    
     
     private func setupConstraints(){
         let padding: CGFloat = 20
@@ -93,4 +102,5 @@ class GFItemInfoVC: UIViewController {
             actionButton.heightAnchor.constraint(equalToConstant: 44),
         ])
     }
+    
 }

@@ -9,11 +9,14 @@ import Foundation
 import UIKit
 
 class NetworkManager {
+    
     static let shared = NetworkManager()
     private let baseURL = "https://api.github.com/users/"
     let cache = NSCache<NSString, UIImage>()
     
+    
     private init() {}
+    
     
     func getFollowers(for username: String, page: Int, completion: @escaping (Result<[Follower], GFError>) -> Void) {
         let endpoint = baseURL + "\(username)/followers?per_page=100&page=\(page)"
@@ -29,11 +32,18 @@ class NetworkManager {
                 return
             }
             
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            guard let response = response as? HTTPURLResponse else {
                 
                 completion(.failure(.invalidResponse))
                 return
             }
+            
+            guard response.statusCode == 200 else {
+                completion(.failure(.exceedRateLimit))
+                print(response.statusCode)
+                return
+            }
+
             
             guard let data else {
                 completion(.failure(.invalidData))
@@ -54,6 +64,7 @@ class NetworkManager {
         task.resume()
     }
     
+    
     func getUserInfo(for username: String, completion: @escaping (Result<User, GFError>) -> Void) {
         let endpoint = baseURL + "\(username)"
         
@@ -68,11 +79,18 @@ class NetworkManager {
                 return
             }
             
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            guard let response = response as? HTTPURLResponse else {
                 
                 completion(.failure(.invalidResponse))
                 return
             }
+            
+            guard  response.statusCode == 200 else {
+                completion(.failure(.exceedRateLimit))
+                print(response.statusCode)
+                return
+            }
+            
             
             guard let data else {
                 completion(.failure(.invalidData))
@@ -94,15 +112,14 @@ class NetworkManager {
         task.resume()
     }
     
+    
     func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void ) {
-        
         let cacheKey = NSString(string: urlString)
         
         if let image = cache.object(forKey: cacheKey) {
             completion(image)
             return
         }
-        
         
         guard let url = URL(string: urlString) else { return }
         

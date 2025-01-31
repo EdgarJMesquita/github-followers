@@ -8,8 +8,7 @@
 import Foundation
 import UIKit
 
-class SearchVC: UIViewController {
-    weak var delegate: SearchProtocol?
+class SearchVC: GFDataLoadingViewVC {
     
     private lazy var logoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -18,36 +17,30 @@ class SearchVC: UIViewController {
         return imageView
     }()
     
+    
     private lazy var usernameTextField: GFTextField = {
         let textField = GFTextField()
         textField.returnKeyType = .done
         return textField
     }()
     
+    
     private lazy var callToActionButton: GFButton = {
         let button = GFButton(backgroundColor: .systemGreen, title: "Ver Seguidores")
         return button
     }()
     
-    var logoImageViewTopConstraint:NSLayoutConstraint!
     
     var isUserNameEntered: Bool {
         return usernameTextField.text?.isGithubUsernameValid ?? false
     }
     
-    init(delegate: SearchProtocol? = nil) {
-        super.init(nibName: nil, bundle: nil)
-        self.delegate = delegate
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -55,49 +48,53 @@ class SearchVC: UIViewController {
         usernameTextField.text = ""
     }
     
+    
     private func addKeyboardDismissGesture(){
         let gestureRecognizer = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(gestureRecognizer)
     }
     
+    
     @objc
-    private func pushFollowerListVC(){
+    private func pushUserInfoVC(){
         usernameTextField.resignFirstResponder()
         guard let username = usernameTextField.text, username.isGithubUsernameValid else {
             presentGFAlertOnMainThread(title: "Atenção", message: "Preencha o usuário", buttonTitle: "Ok")
             return
         }
     
-        let followersListVC = FollowersListVC(username: username)
-        self.navigationController?.pushViewController(followersListVC, animated: true)
-        
+        let userInfoVC = UserInfoVC(username: username)
+        self.navigationController?.pushViewController(userInfoVC, animated: true)
     }
+    
     
     private func setup(){
         view.backgroundColor = .systemBackground
         
         usernameTextField.delegate = self
-        callToActionButton.addTarget(self, action: #selector(pushFollowerListVC), for: .touchUpInside)
+        callToActionButton.addTarget(self, action: #selector(pushUserInfoVC), for: .touchUpInside)
         
         setupHierarchy()
         setupConstraints()
         addKeyboardDismissGesture()
     }
     
+    
     private func setupHierarchy(){
-        view.addSubview(logoImageView)
-        view.addSubview(usernameTextField)
-        view.addSubview(callToActionButton)
+        view.addSubviews(
+            logoImageView,
+            usernameTextField,
+            callToActionButton
+        )
     }
+    
     
     private func setupConstraints(){
         let topConstraintConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 20 : 80
         
-        logoImageViewTopConstraint = logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintConstant)
-        logoImageViewTopConstraint.isActive = true
-        
         NSLayoutConstraint.activate([
+            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintConstant),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.widthAnchor.constraint(equalToConstant: 200),
             logoImageView.heightAnchor.constraint(equalToConstant: 200),
@@ -117,12 +114,15 @@ class SearchVC: UIViewController {
             callToActionButton.heightAnchor.constraint(equalToConstant: 50),
         ])
     }
+    
 }
 
 extension SearchVC: UITextFieldDelegate {
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        pushFollowerListVC()
+        pushUserInfoVC()
         return true
     }
+    
 }

@@ -12,6 +12,7 @@ enum ItemInfoType {
 }
 
 class GFItemInfoView: UIView {
+    
     private lazy var symbolImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -20,11 +21,13 @@ class GFItemInfoView: UIView {
         return imageView
     }()
     
+    
     private lazy var titleLabel: GFTitleLabel = {
         let label = GFTitleLabel(textAlignment: .left, fontSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
     
     private lazy var countLabel: GFTitleLabel = {
         let label = GFTitleLabel(textAlignment: .center, fontSize: 14)
@@ -32,27 +35,29 @@ class GFItemInfoView: UIView {
         return label
     }()
     
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
     }
     
+    
     func setData(type: ItemInfoType, withCount count: Int){
         switch type {
             case .repos:
-                symbolImageView.image = UIImage(systemName: "folder")
+                symbolImageView.image = SFSymbols.repos
                 titleLabel.text = "Public Repos"
                 break
             case .gists:
-                symbolImageView.image = UIImage(systemName: "text.alignleft")
+                symbolImageView.image = SFSymbols.gists
                 titleLabel.text = "Public Gists"
                 break
             case .followers:
-                symbolImageView.image = UIImage(systemName: "heart")
+                symbolImageView.image = SFSymbols.followers
                 titleLabel.text = "Followers"
                 break
             case .following:
-                symbolImageView.image = UIImage(systemName: "person.2")
+                symbolImageView.image = SFSymbols.following
                 titleLabel.text = "Following"
                 break
         }
@@ -60,16 +65,21 @@ class GFItemInfoView: UIView {
         countLabel.text = String(count)
     }
     
+    
     private func setupUI(){
         setupHierarchy()
         setupConstraints()
     }
     
+    
     private func setupHierarchy(){
-        addSubview(symbolImageView)
-        addSubview(titleLabel)
-        addSubview(countLabel)
+        addSubviews(
+            symbolImageView,
+            titleLabel,
+            countLabel
+        )
     }
+    
     
     private func setupConstraints(){
         NSLayoutConstraint.activate([
@@ -90,7 +100,9 @@ class GFItemInfoView: UIView {
         ])
     }
     
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
 }
