@@ -15,27 +15,18 @@
 ## Preview
 
 <div style="display: flex; width: 100%; justify-content: space-between">
-    <div  style="width: 49%">
-        Search
-        <img src="./docs/search.png"  />
-    </div>
-    <div style="width: 49%">
-        User Info
-        <img src="./docs/user1.png" />
-    </div>
+<img src="./docs/search.png" style="width: 49%" />
+<img src="./docs/user1.png" style="width: 49%"/>
 </div>
 
 #
 
 <div style="display: flex; width: 100%; justify-content: space-between">
-   <div style="width: 49%">
-        Favorites
-        <img src="./docs/favorites.png" />
-    </div>
-    <div  style="width: 49%">
-        Followers
-        <img src="./docs/followers.png"  />
-    </div>
+
+<img src="./docs/favorites.png" style="width: 49%"/>
+
+<img src="./docs/followers.png"  style="width: 49%"/>
+ 
 </div>
 
 #
